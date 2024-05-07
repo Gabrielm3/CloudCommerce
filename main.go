@@ -23,8 +23,8 @@ func StartLambda(ctx context.Context, event events.CognitoEventUserPoolsPostConf
 	awsgo.Init()
 
 	if !ValidateParameters() {
-		fmt.Println("Missing parameters. Put SecretManager in environment variables.")
-		err := errors.New("Missing parameters. Put SecretManager in environment variables.")
+		fmt.Println("Missing parameters. Put SecretManager in environment variables")
+		err := errors.New("missing parameters. Put secretmanager in environment variables")
 		return event, err
 	}
 
@@ -46,6 +46,9 @@ func StartLambda(ctx context.Context, event events.CognitoEventUserPoolsPostConf
 		fmt.Println("Error reading secret: " + err.Error())
 		return event, err
 	}
+
+	err = bd.SignUp(dat)
+	return event, err
 }
 
 
