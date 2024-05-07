@@ -9,6 +9,8 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	lambda "github.com/aws/aws-lambda-go/lambda"
 	"github.com/gabrielm3/cloudcommerce/awsgo"
+	"github.com/gabrielm3/cloudcommerce/bd"
+	"github.com/gabrielm3/cloudcommerce/models"
 )
 
 
@@ -23,6 +25,25 @@ func StartLambda(ctx context.Context, event events.CognitoEventUserPoolsPostConf
 	if !ValidateParameters() {
 		fmt.Println("Missing parameters. Put SecretManager in environment variables.")
 		err := errors.New("Missing parameters. Put SecretManager in environment variables.")
+		return event, err
+	}
+
+	var dat models.SignUp
+
+	for row, att := range event.Request.UserAttributes {
+		switch row {
+			case "email":
+				dat.UserEmail = att
+				fmt.Println("Email: " + dat.UserEmail)
+			case "sub":
+				dat.UserUUID = att
+				fmt.Println("Sub: " + dat.UserUUID)
+		}
+	}
+
+	err := bd.ReadSecret()
+	if err != nil {
+		fmt.Println("Error reading secret: " + err.Error())
 		return event, err
 	}
 }
