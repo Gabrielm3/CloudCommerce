@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func closeMySQL() string {
+func CloseMySQL() string {
 	t := time.Now()
 
 	return fmt.Sprintf(
