@@ -21,17 +21,17 @@ func Handlers(path string, method string, body string, headers map[string]string
 
 	switch path[0:4] {
 	case "user":
-
+		return ProcUsers(body, path, method, user, id, request)
 	case "prod":
-	
+		return ProcProducts(body, path, method, user, idn, request)
 	case "stoc":
-
-	case "addr":
-
+		return ProcStock(body, path, method, user, idn, request)
+	case "addr":	
+		return ProcAddress(body, path, method, user, idn, request)
 	case "cate":
-
+		return ProcCategory(body, path, method, user, idn, request)
 	case "orde":
-
+		return ProcOrder(body, path, method, user, idn, request)
 	}
 
 	return 400, "Invalid"
@@ -62,4 +62,26 @@ func validAuth(path string, method string, headers map[string]string) (bool, int
 	return true, 200, msg
 }
 
-func ProcesoUsers(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) 
+func ProcUsers(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+	return 400, "Method invalid"
+}
+
+func ProcProducts(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+	return 400, "Method invalid"
+}
+
+func ProcCategory(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+	return 400, "Method invalid"
+}
+
+func ProcStock(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+	return 400, "Method invalid"
+}
+
+func ProcAddress(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+	return 400, "Method invalid"
+}
+
+func ProcOrder(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+	return 400, "Method invalid"
+}
