@@ -6,6 +6,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/gabrielm3/cloudcommerce/auth"
+	"github.com/gabrielm3/cloudcommerce/routers"
 )
 
 func Handlers(path string, method string, body string, headers map[string]string, request events.APIGatewayV2HTTPRequest) (int, string) {
@@ -71,6 +72,11 @@ func ProcProducts(body string, path string, method string, user string, id strin
 }
 
 func ProcCategory(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+	switch method {
+	case "POST":
+		return routers.InsertCategory(body, user)
+	}
+
 	return 400, "Method invalid"
 }
 
