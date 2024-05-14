@@ -71,3 +71,50 @@ func InsertProduct(p models.Product) (int64, error) {
 	fmt.Println("Product inserted")
 	return LastInsertId, nil
 }
+
+func UpdateProduct(p models.Product) error {
+	err := DbConnect()
+	if err != nil {
+		return err
+	}
+	defer Db.Close()
+
+	query := "Update products SET "
+
+	query = tools.FieldUpdate(query, "Prod_Title", "S", 0, 0, p.ProdTitle)
+	query = tools.FieldUpdate(query, "Prod_Description", "S", 0, 0, p.ProdDescription)
+	query = tools.FieldUpdate(query, "Prod_Price", "F", 0, p.ProdPrice, "")
+	query = tools.FieldUpdate(query, "Prod_CategoryId", "N", p.ProdCategId, 0, "")
+	query = tools.FieldUpdate(query, "Prod_Stock", "N", p.ProdStock, 0, "")
+	query = tools.FieldUpdate(query, "Prod_Path", "S", 0, 0, p.ProdPath)
+
+	query += " WHERE Prod_Id = " + strconv.Itoa(p.ProdId)
+
+	_, err = Db.Exec(query)
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
+
+	fmt.Println("Product updated")
+	return nil
+}
+
+func DeleteProduct(id int) error {
+	err := DbConnect()
+	if err != nil {
+		return err
+	}
+	defer Db.Close()
+
+	query := "DELETE FROM products WHERE Prod_Id = " + strconv.Itoa(id)
+
+	_, err = Db.Exec(query)
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
+
+	fmt.Println("Product deleted")
+	return nil
+}

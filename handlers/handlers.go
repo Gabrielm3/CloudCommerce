@@ -73,6 +73,10 @@ func ProcProducts(body string, path string, method string, user string, id int, 
 	switch method {
 	case "POST":
 		return routers.InsertProduct(body, user)
+	case "PUT":
+		return routers.UpdateProduct(body, user, id)
+	case "DELETE":
+		return routers.DeleteProduct(user, id)
 	}
 
 	return 400, "Method invalid"
