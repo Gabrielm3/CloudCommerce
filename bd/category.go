@@ -96,3 +96,49 @@ func DeleteCategory(id int) error {
 	fmt.Println("Category deleted")
 	return nil
 }
+
+func SelectCategories(CategId int, Slug string) ([]models.Category, error) {
+	var Categ []models.Category
+
+	err := DbConnect()
+	if err != nil {
+		return Categ, err
+	}
+	defer Db.Close()
+
+	query := "SELECT Categ_Id, Categ_Name, Categ_Path FROM category "
+
+	if CategId > 0 {
+		query += "WHERE Categ_id = " + strconv.Itoa(CategId)
+	} else {
+		if len(Slug) > 0 {
+			query += "WHERE Categ_Path LIKE '%" + Slug +"%'"
+		}
+	}
+
+	fmt.Println(query)
+
+	var rows *sql.Rows
+	rows, err = Db.Query(query)
+
+	for rows.Next() {
+		var c models.Category
+		var categId sql.NullInt32
+		var categName sql.NullString
+		var categPath sql.NullString
+
+		err := rows.Scan(&categId, &categName, &categPath)
+		if err != nil {
+			return Categ, err
+		}
+
+		c.CategID = int(categId.Int32)
+		c.CategName = categName.String
+		c.CategPath = categPath.String
+
+		Categ = append(Categ, c)
+	}
+ 
+	fmt.Println("Categories found: ", len(Categ))
+	return Categ, nil
+}

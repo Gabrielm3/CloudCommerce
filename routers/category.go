@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"strconv"
 
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/gabrielm3/cloudcommerce/bd"
 	"github.com/gabrielm3/cloudcommerce/models"
 )
@@ -80,3 +81,31 @@ func DeleteCategory(body string, User string, id int) (int, string) {
 	return 200, "Category deleted"
 }
 
+func SelectCategories(body string, request events.APIGatewayV2HTTPRequest) (int, string) {
+	var err error
+	var CategId int
+	var Slug string
+
+	if len(request.QueryStringParameters["categId"]) > 0 {
+		CategId, err = strconv.Atoi(request.QueryStringParameters["categId"])
+		if err != nil {
+			return 500, "Error converting CategId to integer" + request.QueryStringParameters["categId"]
+		}
+	} else {
+		if len(request.QueryStringParameters["slug"]) > 0 {
+			Slug = request.QueryStringParameters["slug"]
+		}
+	}
+
+	list, err2 := bd.SelectCategories(CategId, Slug)
+	if err2 != nil {
+		return 400, "Error reading categories " + err2.Error()
+	}
+
+	Categ, err3 := json.Marshal(list)
+	if err3 != nil {
+		return 400, "Error converting the category list to JSON " + err3.Error()
+	}
+	
+	return 200, string(Categ)
+}
