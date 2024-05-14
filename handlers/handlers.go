@@ -20,6 +20,8 @@ func Handlers(path string, method string, body string, headers map[string]string
 		return statusCode, user
 	}
 
+	fmt.Println("path[0:4] = " + path[0:4])
+
 	switch path[0:4] {
 	case "user":
 		return ProcUsers(body, path, method, user, id, request)
@@ -67,27 +69,29 @@ func ProcUsers(body string, path string, method string, user string, id string, 
 	return 400, "Method invalid"
 }
 
-func ProcProducts(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+func ProcProducts(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 	return 400, "Method invalid"
 }
 
-func ProcCategory(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+func ProcCategory(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 	switch method {
 	case "POST":
 		return routers.InsertCategory(body, user)
+	case "PUT":
+		return routers.UpdateCategory(body, user, id)
+
 	}
-
 	return 400, "Method invalid"
 }
 
-func ProcStock(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+func ProcStock(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 	return 400, "Method invalid"
 }
 
-func ProcAddress(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+func ProcAddress(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 	return 400, "Method invalid"
 }
 
-func ProcOrder(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+func ProcOrder(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 	return 400, "Method invalid"
 }
