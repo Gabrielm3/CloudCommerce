@@ -99,7 +99,7 @@ func ProcCategory(body string, path string, method string, user string, id int, 
 }
 
 func ProcStock(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
-	return 400, "Method invalid"
+	return routers.UpdateStock(body, user, id)
 }
 
 func ProcAddress(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {

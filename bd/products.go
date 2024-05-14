@@ -2,6 +2,7 @@ package bd
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -244,4 +245,28 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 
 	fmt.Println("Products selected")
 	return Resp, nil
+}
+
+func UpdateStock(p models.Product) error {
+
+	if p.ProdStock == 0 {
+		return errors.New("Stock is zero")
+	}
+
+	err := DbConnect()
+	if err != nil {
+		return err
+	}
+	defer Db.Close()
+
+	sentencia := "UPDATE products SET Prod_Stock = Prod_Stock + " + strconv.Itoa(p.ProdStock) + " WHERE Prod_Id = " + strconv.Itoa(p.ProdId)
+
+	_, err = Db.Exec(sentencia)
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
+
+	fmt.Println("Stock updated")
+	return nil
 }
