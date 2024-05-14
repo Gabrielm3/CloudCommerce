@@ -61,3 +61,22 @@ func UpdateCategory(body string, User string, id int) (int, string) {
 
 	return 200, "Category updated"
 }
+
+func DeleteCategory(body string, User string, id int) (int, string) {
+	if id == 0 {
+		return 400, "You must specify the Category ID"
+	}
+
+	isAdmin, msg := bd.UserIsAdmin(User)
+	if !isAdmin {
+		return 400, msg
+	}
+
+	err := bd.DeleteCategory(id)
+	if err != nil {
+		return 400, "An error occurred while trying to delete the category " + strconv.Itoa(id) + " > " + err.Error()
+	}
+
+	return 200, "Category deleted"
+}
+
