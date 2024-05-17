@@ -66,6 +66,15 @@ func validAuth(path string, method string, headers map[string]string) (bool, int
 }
 
 func ProcUsers(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+	if path == "user/me" {
+		switch method {
+		case "PUT":
+			return routers.UpdateUser(body, user)
+		case "GET":
+			return routers.SelectUser(body, user)
+		}
+	}
+
 	return 400, "Method invalid"
 }
 
