@@ -98,3 +98,18 @@ func DeleteAddress(User string, id int) (int, string) {
 
 	return 200, "Address deleted successfully"
 }
+
+func SelectAddress(User string) (int, string) {
+	addr, err := bd.SelectAddress(User)
+
+	if err != nil {
+		return 400, "Error selecting address " + User + " | " + err.Error()
+	}
+
+	responseJson, err := json.Marshal(addr)
+	if err != nil {
+		return 500, "Error parsing address "
+	}
+
+	return 200, string(responseJson)
+}

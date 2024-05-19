@@ -124,6 +124,8 @@ func ProcAddress(body string, path string, method string, user string, id int, r
 		return routers.UpdateAddress(body, user, id)
 	case "DELETE":
 		return routers.DeleteAddress(user, id)
+	case "GET":
+		return routers.SelectAddress(user)
 	}
 
 	return 400, "Method invalid"
