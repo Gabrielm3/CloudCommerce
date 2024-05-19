@@ -117,4 +117,24 @@ func AddressExists(User string, id int) (error, bool) {
 	fmt.Println(query)
 	fmt.Println("Updated address successfully")
 	return nil
- }
+}
+
+func DeleteAddress(id int) error {
+	err := DbConnect()
+	if err != nil {
+		return err
+	}
+	defer Db.Close()
+
+	query := "DELETE FROM addresses WHERE Add_Id = " + strconv.Itoa(id)
+
+	_, err = Db.Exec(query)
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
+
+	fmt.Println(query)
+	fmt.Println("Address deleted successfully")
+	return nil
+}

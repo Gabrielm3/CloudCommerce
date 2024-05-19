@@ -78,3 +78,23 @@ func UpdateAddress(body string, User string, id int)(int, string) {
 
 	return 200, "Address updated successfully"
 }
+
+func DeleteAddress(User string, id int) (int, string) {
+	err, found := bd.AddressExists(User, id)
+
+	if !found {
+		if err != nil {
+			return 400, "Error checking address " + User + " | " + err.Error()
+		}
+
+		return 400, "Address not found"
+	}
+
+	err = bd.DeleteAddress(id)
+
+	if err != nil {
+		return 400, "Error deleting address " + User + " | " + err.Error()
+	}
+
+	return 200, "Address deleted successfully"
+}
