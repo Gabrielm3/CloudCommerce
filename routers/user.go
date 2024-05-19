@@ -2,7 +2,9 @@ package routers
 
 import (
 	"encoding/json"
+	"strconv"
 
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/gabrielm3/cloudcommerce/bd"
 	"github.com/gabrielm3/cloudcommerce/models"
 )
@@ -51,4 +53,31 @@ func SelectUser(body string, User string) (int, string) {
 	}
 
 	return 200, string(responseJson)
+}
+
+func SelectUsers(body string, User string, request events.APIGatewayV2HTTPRequest) (int, string) {
+	var Page int
+
+	if len(request.QueryStringParameters["page"]) == 0 {
+		Page = 1
+	} else {
+		Page, _ = strconv.Atoi(request.QueryStringParameters["page"])
+	}
+
+	isAdmin, msg := bd.UserIsAdmin(User)
+	if !isAdmin {
+		return 400, msg
+	}
+
+	user, err := bd.SelectUsers(Page)
+	if err != nil {
+		return 400, "An error occurred while trying to select the users " + err.Error()
+	}
+
+	respJson, err := json.Marshal(user)
+	if err != nil {
+		return 500, "Error marshalling the response " + err.Error()
+	}
+
+	return 200, string(respJson)
 }
