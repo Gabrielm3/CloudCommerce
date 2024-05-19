@@ -120,6 +120,8 @@ func ProcAddress(body string, path string, method string, user string, id int, r
 	switch method {
 	case "POST":
 		return routers.InsertAddress(body, user)
+	case "PUT":
+		return routers.UpdateAddress(body, user, id)
 	}
 
 	return 400, "Method invalid"

@@ -51,3 +51,30 @@ func InsertAddress(body string, User string) (int, string){
 
 	return 200, "Address inserted successfully"
 }
+
+func UpdateAddress(body string, User string, id int)(int, string) {
+	var t models.Address
+
+	err := json.Unmarshal([]byte(body), &t)
+	if err != nil {
+		return 400, "Error in data " + err.Error()
+	}
+
+	t.AddId = id
+	var found bool
+	err, found = bd.AddressExists(User, t.AddId)
+
+	if !found {
+		if err != nil {
+			return 400, "Error checking address " + User + " " + err.Error()
+		}
+		return 400, "Address not found"
+	}
+
+	err = bd.UpdateAddress(t)
+	if err != nil {
+		return 400, "Error updating address " + User + " " + err.Error()
+	}
+
+	return 200, "Address updated successfully"
+}
