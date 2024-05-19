@@ -132,5 +132,12 @@ func ProcAddress(body string, path string, method string, user string, id int, r
 }
 
 func ProcOrder(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
+	switch method {
+	case "POST":
+		return routers.InsertOrder(body, user)
+	case "GET":
+		return routers.SelectOrders(user, request)
+	}
+
 	return 400, "Method invalid"
 }
