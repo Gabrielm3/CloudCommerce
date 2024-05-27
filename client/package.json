@@ -1,0 +1,25 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "amazon-cognito-identity-js": "^6.3.12",
+    "aws-amplify": "^6.3.4",
+    "aws-sdk": "^2.1628.0",
+    "formik": "^2.4.6",
+    "lodash": "^4.17.21",
+    "next": "14.2.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "sass": "^1.77.2",
+    "semantic-ui-css": "^2.5.0",
+    "semantic-ui-react": "^2.1.5",
+    "yup": "^1.4.0"
+  }
+}
