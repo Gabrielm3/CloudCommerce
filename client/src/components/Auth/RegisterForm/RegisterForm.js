@@ -1,16 +1,25 @@
 import { Button, Form } from "semantic-ui-react";
 import Link from "next/link";
 import { useFormik } from "formik";
+import { useRouter } from "next/router";
+import { authApi } from "@/api";
 import { initialValues, validationSchema } from "./RegisterForm.form";
 import styles from "./RegisterForm.module.scss";
 
 export function RegisterForm() {
+  const router = useRouter();
   const formik = useFormik({
     initialValues: initialValues(),
     validationSchema: validationSchema(),
     validationOnChange: false,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (formValue) => {
+      try {
+        await authApi.register(formValue.email, formValue.password);
+
+        router.push(`/join/confirmation?email=${formValue.email}`);
+      } catch (error) {
+        console.error(error);
+      }
     },
   });
 
